@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 					// Only include those ending in Spec.js
 					// Specifically excluding those ending in NotReady.js
 					vendor: [
-						'lib/jquery-2.1.1.min.js',
+						'lib/jQuery-2.1.1.min.js',
 						'lib/jquery-jasmine.js',
 						],
 					specs: [
