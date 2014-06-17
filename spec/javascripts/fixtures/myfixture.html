@@ -1,0 +1,503 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en">           <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Headless Testing | PhantomJS</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="shortcut icon" href="http://phantomjs.org/img/favicon.ico">
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://phantomjs.org/css/main.css">
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-21665893-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+</head>
+<body>
+	<div id="foobar">baz</div>
+    <div class="masthead">
+        <div class="grid header">
+            <a href="http://phantomjs.org/" class="grid_4 alpha">
+            <img src="http://phantomjs.org/img/phantomjs-logo.png" alt="PhantomJS" width="240" height="80">
+            </a>
+            <ul class="nav-main grid_8 omega">
+                <li><a href="https://github.com/ariya/phantomjs">Source Code</a></li>
+                <li><a href="http://phantomjs.org/documentation">Documentation</a></li>
+                <li><a href="http://phantomjs.org/api">API</a></li>
+                <li><a href="http://phantomjs.org/examples">Examples</a></li>
+                <li><a href="http://phantomjs.org/faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="shift">
+        <div class="shift__down">
+            <div class="grid navigator">
+                <div class="grid_9 push_3">
+                    <div class="post">
+                        <h1>Headless Testing</h1>
+                        <p>One major use case of PhantomJS is <strong>headless testing</strong> of web applications. It is suitable for general command-line based testing, within a precommit hook, and as part of a continuous integration system.</p>
+                        <h2>Test Frameworks</h2>
+                        <p>PhantomJS itself is <strong>not</strong> a test framework, it is only used to launch the tests via a suitable test runner.</p>
+                        <p>The following table summarizes the list of various test frameworks and the corresponding test runners. If the framework does not need an external/third-party runner, it is marked as &quot;built-in&quot;.</p>
+                        <table><thead>
+                            <tr>
+                                <th align="left">Framework</th>
+                                <th align="left">Test Runner</th>
+                            </tr>
+                        </thead><tbody>
+                        <tr>
+                            <td align="left"><a href="http://busterjs.org">Buster.JS</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://jnicklas.github.com/capybara">Capybara</a></td>
+                            <td align="left"><a href="https://github.com/jonleighton/poltergeist">Poltergeist</a>, <a href="http://terminus.jcoglan.com">Terminus</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://visionmedia.github.com/mocha">Mocha</a></td>
+                            <td align="left"><a href="http://chutzpah.codeplex.com">Chutzpah</a>, <a href="http://metaskills.net/mocha-phantomjs">mocha-phantomjs</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://funcunit.com">FuncUnit</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://hirojs.com">Hiro</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://karma-runner.github.com/">Karma</a> (née Testacular)</td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="https://github.com/pivotal/jasmine">Jasmine</a></td>
+                            <td align="left"><a href="http://chutzpah.codeplex.com">Chutzpah</a>, <a href="https://github.com/jasmine-contrib/grunt-jasmine-runner">grunt-jasmine-runner</a>, <a href="https://github.com/netzpirat/guard-jasmine">guard-jasmine</a>, <a href="https://github.com/jcarver989/phantom-jasmine">phantom-jasmine</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://code.google.com/p/js-test-driver/">JsTestDriver</a></td>
+                            <td align="left"><a href="https://github.com/larrymyers/js-test-driver-phantomjs">js-test-driver-phantomjs</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://arunoda.github.io/laika/">Laika</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://jeffschwartz.github.io/preamble/">Preamble</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://qunitjs.com">QUnit</a></td>
+                            <td align="left"><a href="https://github.com/jquery/qunit/tree/master/addons/phantomjs">built-in</a>, <a href="http://chutzpah.codeplex.com">Chutzpah</a>, <a href="http://js-testrunner.codehaus.org">JS Test Runner</a>, <a href="https://github.com/proxv/qlive">Qlive</a>, <a href="http://github.com/aaronroyer/qunited">QUnited</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://code.google.com/p/robotframework/">Robot Framework</a></td>
+                            <td align="left"><a href="https://github.com/datakurre/phantomrobot">phantomrobot</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="https://github.com/juliangruber/tapedeck">tapedeck</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="https://github.com/airportyh/testem">Testem</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://dvcs.w3.org/hg/webdriver/raw-file/tip/webdriver-spec.html">WebDriver</a></td>
+                            <td align="left"><a href="https://github.com/detro/ghostdriver">GhostDriver</a></td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="https://github.com/WebReflection/wru">wru</a></td>
+                            <td align="left">built-in</td>
+                        </tr>
+                        <tr>
+                            <td align="left"><a href="http://yuilibrary.com/projects/yuitest">YUITest</a></td>
+                            <td align="left"><a href="https://github.com/davglass/grover">Grover</a>, <a href="https://github.com/metafeather/phantomjs-yuitest">phantomjs-yuitest</a></td>
+                        </tr>
+                    </tbody></table>
+                    <p>PhantomJS includes <a href="https://github.com/ariya/phantomjs/blob/master/examples/run-qunit.js">run-qunit</a> and <a href="https://github.com/ariya/phantomjs/blob/master/examples/run-jasmine.js">run-jasmine</a> in its <code>examples</code> subdirectory. However, these are for illustration purposes and lack important reporting features necessary for real-world uses!</p>
+                    <h2>PhantomJS tailored testing</h2>
+                    <p>In addition, there are <a href="http://phantomjs.org/related-projects.html">Related Projects</a> which are built on top of PhantomJS to provide convenient high-level functionality for testing purposes:</p>
+                    <ul>
+                        <li><a href="http://casperjs.org">Casper.js</a> is useful to build scripted navigation and testing</li>
+                        <li><a href="https://github.com/StanAngeloff/lotte">Lotte</a> adds jQuery-like methods, chaining, and more assertion logic</li>
+                        <li><a href="https://github.com/jgonera/webspecter">WebSpecter</a> is a BDD-style acceptance test framework for web applications</li>
+                    </ul>
+                    <h2>Continuous Integration Systems</h2>
+                    <p>Using PhantomJS with CI system such as <strong><a href="http://jenkins-ci.org/">Jenkins</a></strong> or <strong><a href="http://www.jetbrains.com/teamcity/">TeamCity</a></strong> does not require special setup. Make sure PhantomJS is installed properly on the slave/build agent and it is ready to go.</p>
+                    <p>Since PhantomJS is purely headless on Linux, the agent can run on an installation with any GUI. This means, a barebone Linux system without X11 is not a problem for PhantomJS. It makes it possible to spawn light build agents on Amazon EC2 or Heroku instances.</p>
+                    <p><strong><a href="http://about.travis-ci.org/">Travis CI</a></strong>, a popular hosted CI system, has built-in support for PhantomJS. See <a href="http://about.travis-ci.org/docs/user/gui-and-headless-browsers/">its documentation</a> for details.</p>
+                </div>
+            </div>
+            <div class="grid_3 pull_9">
+
+
+                <h2 class="nav-title">Documentation</h2>
+                <ul>
+                    <li class="nav-group">
+                        <div class="nav-group-label">Get Started</div>
+
+                        <ul>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/download.html" class="nav-item-name">Download</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/build.html" class="nav-item-name">Build</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/releases.html" class="nav-item-name">Releases</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/release-names.html" class="nav-item-name">Release Names</a>
+
+                            </li>
+
+
+
+
+
+
+
+                            <li class="nav-item nav-item-doc nav-group-end">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/repl.html" class="nav-item-name">REPL</a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-group">
+                        <div class="nav-group-label">Learn</div>
+
+                        <ul>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/quick-start.html" class="nav-item-name">Quick Start</a>
+
+                            </li>
+
+
+
+
+
+
+
+                            <li class="nav-item nav-item-doc current">
+                                <span class="nav-item-label">D</span>
+
+                                <span class="nav-item-name">Headless Testing</span>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/screen-capture.html" class="nav-item-name">Screen Capture</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/network-monitoring.html" class="nav-item-name">Network Monitoring</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/page-automation.html" class="nav-item-name">Page Automation</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/inter-process-communication.html" class="nav-item-name">Inter Process Communication</a>
+
+                            </li>
+
+
+
+
+
+
+
+                            <li class="nav-item nav-item-doc nav-group-end">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/api/command-line.html" class="nav-item-name">Command Line Interface</a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-group">
+                        <div class="nav-group-label">Get Help</div>
+
+                        <ul>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/troubleshooting.html" class="nav-item-name">Troubleshooting</a>
+
+                            </li>
+
+
+
+
+
+
+
+                            <li class="nav-item nav-item-doc nav-group-end">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/faq.html" class="nav-item-name">FAQ</a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-group">
+                        <div class="nav-group-label">Explore</div>
+
+                        <ul>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/examples/index.html" class="nav-item-name">Examples</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/best-practices.html" class="nav-item-name">Best Practices</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/tips-and-tricks.html" class="nav-item-name">Tips and Tricks</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/supported-web-standards.html" class="nav-item-name">Supported Web Standards</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/buzz.html" class="nav-item-name">Buzz</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/users.html" class="nav-item-name">Who's using PhantomJS?</a>
+
+                            </li>
+
+
+
+
+
+
+
+                            <li class="nav-item nav-item-doc nav-group-end">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/related-projects.html" class="nav-item-name">Related Projects</a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-group">
+                        <div class="nav-group-label">Contribute</div>
+
+                        <ul>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/contributing.html" class="nav-item-name">Contributing</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/source-code.html" class="nav-item-name">Source Code</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/test-suite.html" class="nav-item-name">Test Suite</a>
+
+                            </li>
+
+
+
+
+
+                            <li class="nav-item nav-item-doc">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/release-preparation.html" class="nav-item-name">Release Preparation</a>
+
+                            </li>
+
+
+
+
+
+
+
+                            <li class="nav-item nav-item-doc nav-group-end">
+                                <span class="nav-item-label">D</span>
+
+                                <a href="http://phantomjs.org/crash-reporting.html" class="nav-item-name">Crash Reporting</a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="shift__up island promo improve">
+        Please take a moment to <a href="https://github.com/ariya/phantomjs/edit/gh-pages/_posts/documentation/learn/2000-01-02-headless-testing.md">improve this document</a> with anything that could be useful to other developers, we'd love to see it.
+    </div>
+</div>
+<div class="community">
+    <h2>Community:</h2>
+    <ul>
+        <li><a href="http://phantomjs.org/release-1.9.html" class="link-release">Read the release notes</a></li>
+        <li><a href="https://groups.google.com/forum/#!forum/phantomjs" class="link-ml">Join the mailing list</a></li>
+        <li><a href="https://github.com/ariya/phantomjs/issues" class="link-bugs">Report bugs</a></li>
+    </ul>
+</div>
+<div class="footer">
+    <div class="footer-content" class="grid">
+        <p>
+        &copy; Copyright 2010-2014 <a href="http://twitter.com/AriyaHidayat">Ariya Hidayat</a> &mdash; Homepage design by <a href="http://svay.com/">Maurice Svay</a> &mdash; Documentation design by <a href="http://twitter.com/fold_left">Jamie Mason</a>.
+        </p>
+    </div>
+</div>
+</body>
+</html>
