@@ -603,7 +603,7 @@ describe("Manually ticking the Jasmine Clock", function() {
     });
   });
 
-describe("Asynchronous specs", function() {
+xdescribe("Asynchronous specs", function() {
   var value;
   beforeEach(function(done) {
      setTimeout(function() {
